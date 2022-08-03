@@ -28,5 +28,10 @@ namespace EvernoteClone.View
         {
             Application.Current.Shutdown();
         }
+
+        private void SpeechButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
