@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
+using EvernoteClone.Model;
 
 namespace EvernoteClone.ViewModel.Commands;
 
@@ -9,12 +10,15 @@ public class NewNoteCommand : ICommand
 
     public bool CanExecute(object? parameter)
     {
-        return true;
+        var selectedNotebook = parameter as Notebook;
+        return selectedNotebook != null;
     }
 
     public void Execute(object? parameter)
     {
-        //TODO: New note
+        var selectedNotebook = parameter as Notebook;
+
+        NotesViewModel.CreateNote(selectedNotebook.Id);;
     }
 
     public event EventHandler? CanExecuteChanged;

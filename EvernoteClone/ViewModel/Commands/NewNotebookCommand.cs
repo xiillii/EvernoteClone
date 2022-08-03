@@ -14,7 +14,7 @@ public class NewNotebookCommand : ICommand
 
     public void Execute(object? parameter)
     {
-        //TODO: Create new notebook
+        NotesViewModel.CreateNotebook();
     }
 
     public event EventHandler? CanExecuteChanged;
