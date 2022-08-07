@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using EvernoteClone.Model;
 using EvernoteClone.ViewModel.Commands;
 using EvernoteClone.ViewModel.Helpers;
@@ -18,7 +19,9 @@ public class NotesViewModel
         set
         {
             _selectedNotebook = value;
-            //TODO: Get the notes
+            
+
+            GetNotes();
         }
     }
 
@@ -31,6 +34,11 @@ public class NotesViewModel
     {
         NewNoteCommand = new NewNoteCommand(this);
         NewNotebookCommand = new NewNotebookCommand(this);
+
+        Notebooks = new ObservableCollection<Notebook>();
+        Notes = new ObservableCollection<Note>();
+
+        GetNotebooks();
     }
 
     public void CreateNotebook()
@@ -54,5 +62,30 @@ public class NotesViewModel
         };
 
         DatabaseHelper.Insert(newNote);
+    }
+
+    private void GetNotebooks()
+    {
+        var notebooks = DatabaseHelper.Read<Notebook>();
+        
+        Notebooks.Clear();
+        foreach (var notebook in notebooks)
+        {
+            Notebooks.Add(notebook);
+        }
+    }
+
+    private void GetNotes()
+    {
+        if (SelectedNotebook != null && SelectedNotebook.Id > 0)
+        {
+            var notes = DatabaseHelper.Read<Note>().Where(n => n.NotebookId == SelectedNotebook.Id);
+
+            Notes.Clear();
+            foreach (var note in notes)
+            {
+                Notes.Add(note);
+            } 
+        }
     }
 }
